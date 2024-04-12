@@ -1,5 +1,6 @@
 plugins {
     kotlin("jvm") version "1.9.23"
+    id("xyz.jpenilla.run-velocity") version "2.2.3"
 }
 
 group = "com.github.arcticaquila.aquamultiinstance"
@@ -15,8 +16,9 @@ dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test")
     implementation("org.jetbrains.kotlin:kotlin-stdlib:1.9.23")
 
-    // Dependency for Paper API
-    compileOnly("io.papermc.paper:paper-api:1.20.4-R0.1-SNAPSHOT")
+    // Dependency for Velocity API
+    compileOnly("com.velocitypowered:velocity-api:3.3.0-SNAPSHOT")
+    annotationProcessor("com.velocitypowered:velocity-api:3.3.0-SNAPSHOT")
 }
 
 tasks.test {
@@ -51,4 +53,11 @@ tasks.withType<Jar> {
             zipTree(it)
         }
     })
+}
+
+tasks {
+    runVelocity {
+        velocityVersion("3.3.0-SNAPSHOT")
+        dependsOn ("jar")
+    }
 }
