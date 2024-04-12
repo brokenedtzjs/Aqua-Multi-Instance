@@ -1,6 +1,7 @@
 plugins {
     kotlin("jvm") version "1.9.23"
     id("xyz.jpenilla.run-velocity") version "2.2.3"
+    kotlin("kapt") version "1.9.23"
 }
 
 group = "com.github.arcticaquila.aquamultiinstance"
@@ -18,7 +19,7 @@ dependencies {
 
     // Dependency for Velocity API
     compileOnly("com.velocitypowered:velocity-api:3.3.0-SNAPSHOT")
-    annotationProcessor("com.velocitypowered:velocity-api:3.3.0-SNAPSHOT")
+    kapt("com.velocitypowered:velocity-api:3.3.0-SNAPSHOT")
 }
 
 tasks.test {
@@ -58,6 +59,7 @@ tasks.withType<Jar> {
 tasks {
     runVelocity {
         velocityVersion("3.3.0-SNAPSHOT")
+        dependsOn("cleanVelocityPluginsCache")
         dependsOn ("jar")
     }
 }
