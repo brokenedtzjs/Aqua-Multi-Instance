@@ -3,15 +3,19 @@ plugins {
 }
 
 group = "com.github.arcticaquila.aquamultiinstance"
-version = "1.0-SNAPSHOT"
+version = "1.0.0"
 
 repositories {
     mavenCentral()
+    // PaperMC repository
     maven("https://repo.papermc.io/repository/maven-public/")
 }
 
 dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.9.23")
+
+    // Dependency for Paper API
     compileOnly("io.papermc.paper:paper-api:1.20.4-R0.1-SNAPSHOT")
 }
 
@@ -20,4 +24,31 @@ tasks.test {
 }
 kotlin {
     jvmToolchain(17)
+}
+
+// Configure Jar task to make FatJar
+tasks.withType<Jar> {
+
+    // Declare Main Class attributes in the manifest
+    manifest {
+        attributes["Main-Class"] = "com.github.arcticaquila.aquamultiinstance.MainKt"
+    }
+
+    // Exclude duplicate entries from the JAR
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+    // Include files from the main source set's output directory
+    from(sourceSets.main.get().output)
+
+    // Depend on the runtime classpath configuration
+    dependsOn(configurations.runtimeClasspath)
+
+    // Include JAR files from the runtime classpath configuration
+    from({
+        configurations.runtimeClasspath.get().filter {
+            it.name.endsWith("jar")
+        }.map {
+            zipTree(it)
+        }
+    })
 }
