@@ -16,13 +16,13 @@ import java.nio.file.Path
     authors = ["ArcticAquila"]
 )
 
-class Main @Inject constructor(
+class VelocityPlugin @Inject constructor(
     private val server: ProxyServer,
     private val logger: Logger,
     @DataDirectory dataDirectory: Path
 ) {
     init {
-        logger.info(dataDirectory.toString())
+        logger.info("Loaded Plugin Directory: {}" + dataDirectory.toString())
         logger.info("Hello there! I made my first plugin with Velocity.")
     }
 }
